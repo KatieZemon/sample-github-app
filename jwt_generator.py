@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+import os
+
 import jwt
 import time
 
-PRIVATE_KEY_FILE_PATH = 'key.pem'  # This is a file. Should it be a secret or volume?
+PRIVATE_KEY_FILE_PATH = os.getenv('KEY_FILE_PATH', 'key.pem')  # This is a file. Should it be a secret or volume?
 APP_ID = '309928'
 
 
