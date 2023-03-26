@@ -1,5 +1,4 @@
 import json
-import os
 import time
 
 import aiohttp
@@ -34,7 +33,7 @@ async def opened_pr(event: sansio.Event):
         print('TL')
 
 
-async def produce_access_token(gh:GitHubAPI, install_id:int):
+async def produce_access_token(gh: GitHubAPI, install_id: int):
     jwt = jwt_generator.generate()
     time.sleep(1)
     url = f"/app/installations/{install_id}/access_tokens"
@@ -42,8 +41,8 @@ async def produce_access_token(gh:GitHubAPI, install_id:int):
     return response['token']
 
 
-
-async def post_comment_on_pull_request(repo_full_name:str, pull_request_number:int, installation_id:int, comment_text:str):
+async def post_comment_on_pull_request(repo_full_name: str, pull_request_number: int, installation_id: int,
+                                       comment_text: str):
     url = f"/repos/{repo_full_name}/issues/{pull_request_number}/comments"
 
     async with aiohttp.ClientSession() as session:
@@ -58,11 +57,8 @@ async def post_comment_on_pull_request(repo_full_name:str, pull_request_number:i
         )
 
 
-
 async def gh_event_handler(request: aiohttp.web.Request):
     body = await request.read()
-   # print(body)
-   # print(json.dumps(dict(request.headers), indent=2))
     event = sansio.Event.from_http(request.headers, body)
     if event.event:
         await router.dispatch(event)
