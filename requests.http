@@ -1,0 +1,72 @@
+### Flask Hello
+GET http://localhost:5000/hello
+
+### Flask world
+GET http://localhost:5000/world
+
+### Flask: Webhook
+POST http://localhost:5000/mywebhook
+Content-Type: application/json
+X-GitHub-Event: pull_request
+X-Github-Delivery: the delivery
+
+{
+  "event": "pull_request",
+  "action": "opened",
+  "pull_request": {
+    "some": "data",
+    "foo": "bar"
+  }
+}
+
+### GidgetHub: Webhook
+POST http://localhost:9684/mywebhook
+Content-Type: application/json
+X-GitHub-Event: pull_request
+X-Github-Delivery: the delivery
+
+{
+  "event": "pull_request",
+  "action": "opened",
+  "pull_request": {
+    "some": "data",
+    "foo": "bar"
+  }
+}
+
+### GidgetHub: ServiceNow handler
+POST http://localhost:9684/this_is_for_service_now
+Content-Type: application/json
+
+{"foo": "bar"}
+
+### Post comment on pull request
+POST https://api.github.com/repos/KatieZemon/sampleOpsRepo/issues/1/comments
+Accept: application/vnd.github+json
+Authorization: Bearer ghs_8in4C8Lviaf6k55Olps2jPslii108P0HrVh9
+Content-Type: application/json
+
+{
+  "body": "This is a comment!"
+}
+
+
+###
+
+# THIS produces A TOKEN using the installationId and the JWT
+# https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation
+# The token that is produced expires every hour
+# The token: ghs_8in4C8Lviaf6k55Olps2jPslii108P0HrVh9
+# curl --request POST
+#--url "https://api.github.com/app/installations/INSTALLATION_ID/access_tokens"
+#--header "Accept: application/vnd.github+json"
+#--header "Authorization: Bearer JWT"
+#--header "X-GitHub-Api-Version: 2022-11-28"
+POST https://api.github.com/app/installations/35679500/access_tokens
+Accept: application/vnd.github+json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOiAxNjc5NzkyNzQ2LCAiZXhwIjogMTY3OTc5MzM0NiwgImlzcyI6ICIzMDk5MjgifQ.hrTQlb0BR8GVpFM2nmvuzSqsvdHiXeIR9uAvFeKrUJhp7sMsZXmsyPnn83Nm8RAcMEwovP3UtzXakZmTekrFtFSwqOc4_oDksNQdpWWbMLjJ0wF69yEECs0QXOD7GU5urfm1-Jra58RUlkmDgegLDhn-xfa0hxyUY12-p2ovBBjLIGNWHxgauk3dLXIAf6yl8jy52sejHL1EQmJO1KPcwX5G8xoRgQcazYKw9OeqSDEPt-wvs5M_rQ_EYWDqyQAbqxwljF5oq8irFPimf-2ouVdA959hDnSVenkx1iYJ8RI_nS7G6jikoZ0kpce5hbyvEMfOi34-YIL0tyoO993cfw
+X-GitHub-Api-Version: 2022-11-28
+
+###
+
+
