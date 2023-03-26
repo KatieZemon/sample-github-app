@@ -16,8 +16,9 @@ def generate():
     payload = {
         # Issued at time
         'iat': int(time.time()),
-        # JWT expiration time (10 minutes maximum)
-        'exp': int(time.time()) + 600,
+        # JWT max expiration time is 10 minutes in the future. Below is number of seconds
+        #TODO Might be Good to cache this value so we don't regenerate every time
+        'exp': int(time.time()) + 400,
         # GitHub App's identifier
         'iss': APP_ID
     }
