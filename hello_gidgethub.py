@@ -357,7 +357,7 @@ async def update_branch_protection(repo_full_name: str, installation_id: int):
         response = await gh.put(
             url,
             oauth_token=access_token,
-            data = {
+            data={
                 'required_status_checks': {
                     'strict': True,
                     'contexts': [
@@ -396,13 +396,24 @@ async def handle_branch_protection_rule_event(event: sansio.Event):
     installation_id = event.data['installation']['id']
     branch_protection = await get_branch_protection(repo_full_name, installation_id)
     if branch_protection is None:
-        LOGGER.debug("There is no branch protection on main")
-        # TBD create new branch protection
+        LOGGER.debug("There is no branch protection on main. Creating a new branch protection on main")
+        await update_branch_protection(repo_full_name, installation_id)
     elif is_branch_protection_valid(branch_protection):
         LOGGER.debug("Branch protection looks good!")
     else:
         LOGGER.debug("Branch protection is invalid. Updating it")
         await update_branch_protection(repo_full_name, installation_id)
+
+
+# Applies branch protections if repository is created.
+# This only works if  branch exists at time of repository creation (you must create the README file)
+# To enhance this you could catch the exception, create a sample README file, then update branch protection
+# Or instead of using branch protections to protect main, you could have it auto create a ruleset
+@router.register(event_type="repository", action="created")
+async def handle_repository_created(event: sansio.Event):
+    repo_full_name = event.data['repository']['full_name']
+    installation_id = event.data['installation']['id']
+    await update_branch_protection(repo_full_name, installation_id)
 
 
 async def gh_event_handler(request: aiohttp.web.Request):
